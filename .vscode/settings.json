@@ -1,0 +1,10 @@
+{
+  "C_Cpp.errorSquiggles": "enabled",
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/mnt/c/Users/97250/documents/spl/hw1/skeleton/bin",
+      "binaryPath": "/mnt/c/Users/97250/documents/spl/hw1/skeleton/bin/run",
+      "binaryArgs": []
+    }
+  ]
+}

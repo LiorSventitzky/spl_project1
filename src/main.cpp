@@ -24,7 +24,13 @@ int main(int argc, char **argv)
     for (int i = 0; i < 2; i++)
     {
         Customer &c = wareHouse.getCustomer(i);
-        std::cout << c.getName() << std::endl;
+        std::cout << c.getName() + " " + std::to_string(c.getId()) << std::endl;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        Volunteer &v = wareHouse.getVolunteer(i);
+        std::cout << v.getName() + " " + std::to_string(v.getId()) << std::endl;
     }
     /*
     wareHouse.start();

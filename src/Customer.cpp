@@ -24,5 +24,5 @@ int Customer::addOrder(int orderId)
     ordersId.push_back(orderId);
     return orderId;
 }
-Customer *Customer::clone() const { return new Customer(*this); } // Return a copy of the customer
+Customer *Customer::clone() const {} // Return a copy of the customer
 ;

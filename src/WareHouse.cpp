@@ -1,6 +1,7 @@
 
 #include "../include/WareHouse.h"
 #include "../include/Customer.h"
+#include "../include/Volunteer.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -24,8 +25,8 @@ void WareHouse::ParseConFile(const string &configFilePath)
             temp >> word;
             if (word == "customer")
                 this->addCustomer(&temp);
-            // if (word == "volunteer")
-            // this->addVolunteer(&temp);
+            if (word == "volunteer")
+                this->addVolunteer(&temp);
         }
     }
 }
@@ -35,7 +36,6 @@ void WareHouse::addCustomer(stringstream *temp)
 {
     string name, type, dis, maxOrder;
     (*temp) >> name >> type >> dis >> maxOrder;
-    std::cout << name + " " + type + " " + dis + " " + maxOrder << std::endl;
     if (type == "soldier")
     {
         customers.push_back(new SoldierCustomer(customerCounter, name, std::stoi(dis), std::stoi(maxOrder)));
@@ -48,7 +48,6 @@ void WareHouse::addCustomer(stringstream *temp)
 }
 
 // add a new volunteer to the customer list
-/*
 void WareHouse::addVolunteer(stringstream *temp)
 {
     string name, type;
@@ -59,19 +58,19 @@ void WareHouse::addVolunteer(stringstream *temp)
         (*temp) >> cooldown;
         volunteers.push_back(new CollectorVolunteer(volunteerCounter, name, std::stoi(cooldown)));
     }
-    if (type == "limited_collector")
+    else if (type == "limited_collector")
     {
         string cooldown, maxOrder;
         (*temp) >> cooldown >> maxOrder;
         volunteers.push_back(new LimitedCollectorVolunteer(volunteerCounter, name, std::stoi(cooldown), std::stoi(maxOrder)));
     }
-    if (type == "driver")
+    else if (type == "driver")
     {
         string maxdis, distancePerStep;
         (*temp) >> maxdis >> distancePerStep;
         volunteers.push_back(new DriverVolunteer(volunteerCounter, name, std::stoi(maxdis), std::stoi(distancePerStep)));
     }
-    if (type == "limited_driver")
+    else if (type == "limited_driver")
     {
         string maxdis, distancePerStep, maxOrder;
         (*temp) >> maxdis >> distancePerStep >> maxOrder;
@@ -81,7 +80,6 @@ void WareHouse::addVolunteer(stringstream *temp)
         volunteerCounter--; // problem in the type, so we dont do nothing
     volunteerCounter++;
 }
-*/
 
 WareHouse::WareHouse(const string &configFilePath)
 {
@@ -102,11 +100,19 @@ Customer &WareHouse::getCustomer(int customerId) const
         if (customers[i]->getId() == customerId)
             return *customers[i];
     }
+    std::cout << "Customer was not found" << std::endl;
 }
 
 Volunteer &WareHouse::getVolunteer(int volunteerId) const
 {
+    for (int i = 0; i < volunteers.size(); i++)
+    {
+        if (volunteers[i]->getId() == volunteerId)
+            return *volunteers[i];
+    }
+    std::cout << "Volunteer was not found" << std::endl;
 }
+
 Order &WareHouse::getOrder(int orderId) const {}
 const vector<Action *> &WareHouse::getActions() const {};
 void close();

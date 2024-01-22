@@ -5,11 +5,18 @@
 
 CollectorVolunteer::CollectorVolunteer(int id, const string &name, int coolDown) : Volunteer(id, name), coolDown(coolDown), timeLeft(NO_ORDER) {}
 
+CollectorVolunteer::CollectorVolunteer(const CollectorVolunteer &other) : Volunteer(other), coolDown(other.coolDown), timeLeft(other.timeLeft) {}
+
 CollectorVolunteer *CollectorVolunteer::clone() const { return new CollectorVolunteer(*this); }
 
-// not complete
-void CollectorVolunteer::step()
+void CollectorVolunteer::step() // Simulate volunteer step,if the volunteer finished the order, transfer activeOrderId to completedOrderId
 {
+    if (decreaseCoolDown())
+    {
+        timeLeft = NO_ORDER;
+        completedOrderId = activeOrderId;
+        activeOrderId = NO_ORDER;
+    }
 }
 
 int CollectorVolunteer::getCoolDown() const { return coolDown; }
@@ -22,13 +29,10 @@ bool CollectorVolunteer::decreaseCoolDown() // Decrease timeLeft by 1,return tru
     return (timeLeft == 0);
 }
 
-// need to go back
 bool CollectorVolunteer::hasOrdersLeft() const { return true; }
 bool CollectorVolunteer::canTakeOrder(const Order &order) const { return !isBusy(); }
 
-// doesn't work because order is not defined yet
-void CollectorVolunteer::acceptOrder(const Order &order) {}
-/*
+void CollectorVolunteer::acceptOrder(const Order &order)
 {
     if (canTakeOrder(order))
     {
@@ -36,10 +40,9 @@ void CollectorVolunteer::acceptOrder(const Order &order) {}
         timeLeft = coolDown;
     }
 }
-*/
 
 string CollectorVolunteer::toString() const
 {
-    string s = this->toString() + " ,cool down:" + std::to_string(coolDown) + " ,time left:" + std::to_string(timeLeft);
+    string s = Volunteer::toString() + " ,cool down:" + std::to_string(coolDown) + " ,time left:" + std::to_string(timeLeft) + " ,type: Collector";
     return s;
 }

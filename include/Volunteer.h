@@ -14,6 +14,7 @@ class Volunteer
 {
 public:
     Volunteer(int id, const string &name);
+    Volunteer(const Volunteer &other);
     int getId() const;
     const string &getName() const;
     int getActiveOrderId() const;
@@ -42,6 +43,7 @@ class CollectorVolunteer : public Volunteer
 
 public:
     CollectorVolunteer(int id, const string &name, int coolDown);
+    CollectorVolunteer(const CollectorVolunteer &other);
     CollectorVolunteer *clone() const override;
     void step() override;
     int getCoolDown() const;
@@ -62,6 +64,7 @@ class LimitedCollectorVolunteer : public CollectorVolunteer
 
 public:
     LimitedCollectorVolunteer(int id, const string &name, int coolDown, int maxOrders);
+    LimitedCollectorVolunteer(const LimitedCollectorVolunteer &other);
     LimitedCollectorVolunteer *clone() const override;
     bool hasOrdersLeft() const override;
     bool canTakeOrder(const Order &order) const override;
@@ -81,6 +84,7 @@ class DriverVolunteer : public Volunteer
 
 public:
     DriverVolunteer(int id, const string &name, int maxDistance, int distancePerStep);
+    DriverVolunteer(const DriverVolunteer &other);
     DriverVolunteer *clone() const override;
 
     int getDistanceLeft() const;
@@ -104,6 +108,7 @@ class LimitedDriverVolunteer : public DriverVolunteer
 
 public:
     LimitedDriverVolunteer(int id, const string &name, int maxDistance, int distancePerStep, int maxOrders);
+    LimitedDriverVolunteer(const LimitedDriverVolunteer &other);
     LimitedDriverVolunteer *clone() const override;
     int getMaxOrders() const;
     int getNumOrdersLeft() const;

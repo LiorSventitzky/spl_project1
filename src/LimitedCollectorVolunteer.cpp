@@ -5,10 +5,15 @@
 
 LimitedCollectorVolunteer::LimitedCollectorVolunteer(int id, const string &name, int coolDown, int maxOrders) : CollectorVolunteer(id, name, coolDown), maxOrders(maxOrders), ordersLeft(maxOrders) {}
 
-LimitedCollectorVolunteer *LimitedCollectorVolunteer::clone() const { return new LimitedCollectorVolunteer(*this); }
+LimitedCollectorVolunteer::LimitedCollectorVolunteer(const LimitedCollectorVolunteer &other) : CollectorVolunteer(other), maxOrders(other.maxOrders), ordersLeft(other.ordersLeft) {}
+
+LimitedCollectorVolunteer *LimitedCollectorVolunteer::clone() const
+{
+    return new LimitedCollectorVolunteer(*this);
+}
 
 bool LimitedCollectorVolunteer::hasOrdersLeft() const { return (ordersLeft > 0); }
-bool LimitedCollectorVolunteer::canTakeOrder(const Order &order) const { return !isBusy(); }
+bool LimitedCollectorVolunteer::canTakeOrder(const Order &order) const { return !isBusy() && hasOrdersLeft(); }
 void LimitedCollectorVolunteer::acceptOrder(const Order &order)
 {
     if (canTakeOrder(order))
@@ -22,6 +27,6 @@ int LimitedCollectorVolunteer::getMaxOrders() const { return maxOrders; }
 int LimitedCollectorVolunteer::getNumOrdersLeft() const { return ordersLeft; }
 string LimitedCollectorVolunteer::toString() const
 {
-    string s = this->toString() + " max orders:" + std::to_string(maxOrders) + " orders left:" + std::to_string(ordersLeft);
+    string s = CollectorVolunteer::toString() + " ,max orders:" + std::to_string(maxOrders) + " ,orders left:" + std::to_string(ordersLeft);
     return s;
 }

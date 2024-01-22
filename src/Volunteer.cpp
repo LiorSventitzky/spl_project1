@@ -7,7 +7,12 @@ Volunteer::Volunteer(int id, const string &name) : id(id), name(name), completed
 {
 }
 
-int Volunteer::getId() const { return id; }
+Volunteer::Volunteer(const Volunteer &other) : id(other.id), name(other.name), completedOrderId(NO_ORDER), activeOrderId(NO_ORDER) {}
+
+int Volunteer::getId() const
+{
+    return id;
+}
 
 const string &Volunteer::getName() const { return name; }
 
@@ -22,7 +27,9 @@ bool Volunteer::isBusy() const
     return false;
 }
 
-bool Volunteer::hasOrdersLeft() const {}                  // Signal whether the volunteer didn't reach orders limit,Always true for CollectorVolunteer and DriverVolunteer
+bool Volunteer::hasOrdersLeft() const
+{ // Signal whether the volunteer didn't reach orders limit,Always true for CollectorVolunteer and DriverVolunteer
+}
 bool Volunteer::canTakeOrder(const Order &order) const {} // Signal if the volunteer can take the order.
 void Volunteer::acceptOrder(const Order &order) {}        // Prepare for new order(Reset activeOrderId,TimeLeft,DistanceLeft,OrdersLeft depends on the volunteer type)
 
@@ -30,6 +37,6 @@ void Volunteer::step() {} // Simulate volunteer step,if the volunteer finished t
 
 string Volunteer::toString() const
 {
-    return std::to_string(id) + " " + name;
+    return "id:" + std::to_string(id) + "  name:" + name;
 }
 Volunteer *Volunteer::clone() const {} // Return a copy of the volunteer

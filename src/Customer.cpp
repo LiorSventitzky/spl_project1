@@ -6,6 +6,8 @@ Customer::Customer(int id, const string &name, int locationDistance, int maxOrde
 {
 }
 
+Customer::Customer(const Customer &other) : id(other.id), name(other.name), locationDistance(other.locationDistance), maxOrders(other.maxOrders) {}
+
 const string &Customer::getName() const { return name; }
 int Customer::getId() const { return id; }
 int Customer::getCustomerDistance() const { return locationDistance; }
@@ -18,11 +20,15 @@ bool Customer::canMakeOrder() const
     return true;
 }
 const vector<int> &Customer::getOrdersIds() const { return ordersId; }
-int Customer::addOrder(int orderId)
-// עוד לא ממ
-{ // return OrderId if order was added successfully, -1 otherwise
-    ordersId.push_back(orderId);
-    return orderId;
+int Customer::addOrder(int orderId) // return OrderId if order was added successfully, -1 otherwise
+{
+    if (this->canMakeOrder())
+    {
+        ordersId.push_back(orderId);
+        return orderId;
+    }
+    return -1;
 }
+
 Customer *Customer::clone() const {} // Return a copy of the customer
 ;

@@ -20,6 +20,8 @@ int Volunteer::getActiveOrderId() const { return activeOrderId; }
 
 int Volunteer::getCompletedOrderId() const { return completedOrderId; }
 
+void Volunteer::finishCompletedOrder() { completedOrderId = NO_ORDER; }
+
 bool Volunteer::isBusy() const
 {
     if (activeOrderId != -1)
@@ -30,13 +32,11 @@ bool Volunteer::isBusy() const
 bool Volunteer::hasOrdersLeft() const
 { // Signal whether the volunteer didn't reach orders limit,Always true for CollectorVolunteer and DriverVolunteer
 }
-bool Volunteer::canTakeOrder(const Order &order) const {} // Signal if the volunteer can take the order.
-void Volunteer::acceptOrder(const Order &order) {}        // Prepare for new order(Reset activeOrderId,TimeLeft,DistanceLeft,OrdersLeft depends on the volunteer type)
-
 void Volunteer::step() {} // Simulate volunteer step,if the volunteer finished the order, transfer activeOrderId to completedOrderId
 
 string Volunteer::toString() const
 {
-    return "id:" + std::to_string(id) + "  name:" + name;
+    return "id:" + std::to_string(id) + "  name:" + name + " activeOrderID:" + std::to_string(activeOrderId) + " completeOrderID:" + std::to_string(completedOrderId);
 }
-Volunteer *Volunteer::clone() const {} // Return a copy of the volunteer
+
+Volunteer::~Volunteer() {}

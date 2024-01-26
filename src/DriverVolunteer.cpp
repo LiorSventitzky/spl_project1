@@ -1,5 +1,6 @@
 #include "../include/Volunteer.h"
 #include "../include/Order.h"
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -18,8 +19,10 @@ int DriverVolunteer::getDistancePerStep() const { return distancePerStep; }
 
 bool DriverVolunteer::decreaseDistanceLeft() // Decrease distanceLeft by distancePerStep,return true if distanceLeft<=0,false otherwise
 {
-    distanceLeft = distanceLeft - distancePerStep;
-    return distanceLeft <= 0;
+    distanceLeft -= distancePerStep;
+    if (distanceLeft < 0)
+        distanceLeft = 0;
+    return distanceLeft == 0;
 }
 
 bool DriverVolunteer::hasOrdersLeft() const { return true; }

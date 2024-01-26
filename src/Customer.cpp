@@ -31,4 +31,7 @@ int Customer::addOrder(int orderId) // return OrderId if order was added success
 }
 
 Customer *Customer::clone() const {} // Return a copy of the customer
-;
+
+Customer::~Customer()
+{
+}

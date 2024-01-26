@@ -20,6 +20,7 @@ class Order
 
 public:
     Order(int id, int customerId, int distance);
+    Order(Order &other);
     int getId() const;
     int getCustomerId() const;
     int getDistance() const;
@@ -30,6 +31,8 @@ public:
     int getDriverId() const;
     OrderStatus getStatus() const;
     const string toString() const;
+    const string shortenedToString() const;
+    Order *clone();
 
 private:
     const int id;
@@ -38,5 +41,4 @@ private:
     OrderStatus status;
     int collectorId; // Initialized to NO_VOLUNTEER if no collector has been assigned yet
     int driverId;    // Initialized to NO_VOLUNTEER if no driver has been assigned yet
-    string orderStatusToString(OrderStatus status);
 };

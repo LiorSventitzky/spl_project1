@@ -5,6 +5,7 @@
 #include <vector>
 
 Order::Order(int id, int customerId, int distance) : id(id), customerId(customerId), distance(distance), status(OrderStatus::PENDING), collectorId(NO_VOLUNTEER), driverId(NO_VOLUNTEER) {}
+Order::Order(Order &other) : id(other.id), customerId(other.customerId), distance(other.distance), status(other.status), collectorId(other.collectorId), driverId(other.driverId) {}
 int Order::getId() const { return id; }
 int Order::getCustomerId() const { return customerId; }
 int Order::getDistance() const { return distance; }
@@ -28,6 +29,26 @@ const string Order::toString() const
     else
         stat = "UNKNOWN";
 
-    string s = "id:" + std::to_string(id) + " customerId:" + std::to_string(customerId) + " distance:" + std::to_string(distance) + " status:" + stat + " collectorId:" + std::to_string(collectorId) + " driverId:" + std::to_string(driverId);
+    string s = "OrderId:" + std::to_string(id) + "\nOrderStatus:" + stat + "\ncustomerId:" + std::to_string(customerId) + "\ndistance:" + std::to_string(distance) + +"\ncollectorId:" + std::to_string(collectorId) + "\ndriverId:" + std::to_string(driverId);
     return s;
+}
+const string Order::shortenedToString() const
+{
+    string stat;
+    if (status == OrderStatus::PENDING)
+        stat = "PENDING";
+    else if (status == OrderStatus::COLLECTING)
+        stat = "COLLECTING";
+    else if (status == OrderStatus::DELIVERING)
+        stat = "DELIVERING";
+    else if (status == OrderStatus::COMPLETED)
+        stat = "COMPLETED";
+    else
+        stat = "UNKNOWN";
+    return "OrderId: " + std::to_string(id) + "\nOrderStatus: " + stat + "\n";
+}
+
+Order *Order::clone()
+{
+    return new Order(*this);
 }

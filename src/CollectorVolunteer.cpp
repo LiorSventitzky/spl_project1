@@ -1,9 +1,14 @@
 #include "../include/Volunteer.h"
 #include "../include/Order.h"
+#include <iostream>
 #include <string>
 #include <vector>
 
-CollectorVolunteer::CollectorVolunteer(int id, const string &name, int coolDown) : Volunteer(id, name), coolDown(coolDown), timeLeft(NO_ORDER) {}
+using namespace std;
+
+CollectorVolunteer::CollectorVolunteer(int id, const string &name, int coolDown) : Volunteer(id, name), coolDown(coolDown), timeLeft(NO_ORDER)
+{
+}
 
 CollectorVolunteer::CollectorVolunteer(const CollectorVolunteer &other) : Volunteer(other), coolDown(other.coolDown), timeLeft(other.timeLeft) {}
 

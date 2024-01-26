@@ -18,7 +18,7 @@ void LimitedCollectorVolunteer::acceptOrder(const Order &order)
 {
     if (canTakeOrder(order))
     {
-        this->acceptOrder(order);
+        this->CollectorVolunteer::acceptOrder(order);
         ordersLeft--;
     }
 }

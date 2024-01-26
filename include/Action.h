@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "WareHouse.h"
 using std::string;
 using std::vector;
+
+class WareHouse;
 
 enum class ActionStatus
 {
@@ -25,11 +26,13 @@ public:
     virtual void act(WareHouse &wareHouse) = 0;
     virtual string toString() const = 0;
     virtual BaseAction *clone() const = 0;
+    virtual ~BaseAction();
 
 protected:
     void complete();
     void error(string errorMsg);
     string getErrorMsg() const;
+    string statusToString() const;
 
 private:
     string errorMsg;
@@ -44,6 +47,7 @@ public:
     void act(WareHouse &wareHouse) override;
     std::string toString() const override;
     SimulateStep *clone() const override;
+    SimulateStep(const SimulateStep &other);
 
 private:
     const int numOfSteps;
@@ -53,6 +57,7 @@ class AddOrder : public BaseAction
 {
 public:
     AddOrder(int id);
+    AddOrder(const AddOrder &other);
     void act(WareHouse &wareHouse) override;
     string toString() const override;
     AddOrder *clone() const override;
@@ -64,7 +69,8 @@ private:
 class AddCustomer : public BaseAction
 {
 public:
-    AddCustomer(string customerName, string customerType, int distance, int maxOrders);
+    AddCustomer(const string &customerName, const string &customerType, int distance, int maxOrders);
+    AddCustomer(const AddCustomer &other);
     void act(WareHouse &wareHouse) override;
     AddCustomer *clone() const override;
     string toString() const override;
@@ -74,12 +80,14 @@ private:
     const CustomerType customerType;
     const int distance;
     const int maxOrders;
+    string typeToString() const;
 };
 
 class PrintOrderStatus : public BaseAction
 {
 public:
     PrintOrderStatus(int id);
+    PrintOrderStatus(const PrintOrderStatus &other);
     void act(WareHouse &wareHouse) override;
     PrintOrderStatus *clone() const override;
     string toString() const override;
@@ -92,6 +100,7 @@ class PrintCustomerStatus : public BaseAction
 {
 public:
     PrintCustomerStatus(int customerId);
+    PrintCustomerStatus(const PrintCustomerStatus &other);
     void act(WareHouse &wareHouse) override;
     PrintCustomerStatus *clone() const override;
     string toString() const override;
@@ -104,12 +113,13 @@ class PrintVolunteerStatus : public BaseAction
 {
 public:
     PrintVolunteerStatus(int id);
+    PrintVolunteerStatus(const PrintVolunteerStatus &other);
     void act(WareHouse &wareHouse) override;
     PrintVolunteerStatus *clone() const override;
     string toString() const override;
 
 private:
-    const int VolunteerId;
+    const int volunteerId;
 };
 
 class PrintActionsLog : public BaseAction

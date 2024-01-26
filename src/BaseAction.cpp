@@ -9,16 +9,27 @@
 #include <vector>
 #include <sstream>
 
-BaseAction::BaseAction() { errorMsg = "there is an error!!!"; }
+BaseAction::BaseAction() {}
 ActionStatus BaseAction::getStatus() const { return status; }
-virtual void BaseAction::act(WareHouse &wareHouse) = 0;
-virtual string BaseAction::toString() const = 0;
-virtual BaseAction *BaseAction::clone() const = 0;
+void BaseAction::act(WareHouse &wareHouse){};
+string BaseAction::toString() const {};
+BaseAction *BaseAction::clone() const {};
 
-void BaseAction::complete() { status = ActionStatus::COMPLETED }
+void BaseAction::complete() { status = ActionStatus::COMPLETED; }
 void BaseAction::error(string errorMsg)
 {
-    status = ActionStatus::COMPLETED;
-    std::cout << "Error: " + errorMsg << std::endl;
+    status = ActionStatus::ERROR;
+    this->errorMsg = errorMsg;
+    std::cout << "Error: " + this->errorMsg << std::endl;
 }
 string BaseAction::getErrorMsg() const { return errorMsg; }
+
+string BaseAction::statusToString() const
+{
+    if (BaseAction::getStatus() == ActionStatus::ERROR)
+        return "ERROR";
+    else
+        return "COMPLETE";
+}
+
+BaseAction::~BaseAction() {}

@@ -16,14 +16,14 @@ int LimitedDriverVolunteer::getNumOrdersLeft() const { return ordersLeft; }
 bool LimitedDriverVolunteer::hasOrdersLeft() const { return (ordersLeft > 0); }
 bool LimitedDriverVolunteer::canTakeOrder(const Order &order) const
 {
-    return this->canTakeOrder(order) && hasOrdersLeft();
+    return DriverVolunteer::canTakeOrder(order) && hasOrdersLeft();
 }
 
 void LimitedDriverVolunteer::acceptOrder(const Order &order) // Assign distanceLeft to order's distance and decrease ordersLeft
 {
     if (canTakeOrder(order))
     {
-        this->acceptOrder(order);
+        this->DriverVolunteer::acceptOrder(order);
         ordersLeft--;
     }
 }

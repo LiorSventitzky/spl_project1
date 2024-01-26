@@ -6,6 +6,7 @@
 #include "Order.h"
 #include "Customer.h"
 #include "Volunteer.h"
+#include "Action.h"
 
 #ifndef WareHouse_H_
 #define WareHouse_H_
@@ -22,19 +23,31 @@ class WareHouse
 
 public:
     WareHouse(const string &configFilePath);
+    WareHouse(const WareHouse &other);
     void start();
     void addOrder(Order *order);
-    void addAction(Action *action);
+    void addAction(BaseAction *action);
     Customer &getCustomer(int customerId) const;
     Volunteer &getVolunteer(int volunteerId) const;
     Order &getOrder(int orderId) const;
-    const vector<Action *> &getActions() const;
+    const vector<BaseAction *> &getActions() const;
     void close();
     void open();
+    void SimulateStepInWarehouse();
+    int getOrderCounter();
+    int getCustomerCounter();
+    void printOrderStatus(int orderId);
+    void printCustomerStatus(int customerId);
+    int doesVolunteerExist(int volunteerId);
+    void printVolunteerStatus(int index);
+    void addCustomer(Customer *customer);
+    void createBackUp();
+    void restoreWarehouse();
+    void PrintStuff();
 
 private:
     bool isOpen;
-    vector<Action *> actionsLog;
+    vector<BaseAction *> actionsLog;
     vector<Volunteer *> volunteers;
     vector<Order *> pendingOrders;
     vector<Order *> inProcessOrders;
@@ -46,6 +59,8 @@ private:
     void ParseConFile(const string &configFilePath);
     void addCustomer(stringstream *temp);
     void addVolunteer(stringstream *temp);
+    bool findAvailableCollector(Order &order, int index);
+    bool findAvailableDriver(Order &order, int index);
 };
 
 #endif

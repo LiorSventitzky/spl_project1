@@ -29,6 +29,11 @@ void LimitedDriverVolunteer::acceptOrder(const Order &order) // Assign distanceL
 }
 string LimitedDriverVolunteer::toString() const
 {
-    string s = DriverVolunteer::toString() + " ,max orders:" + std::to_string(ordersLeft) + " ,orders left:" + std::to_string(ordersLeft);
+    string s = Volunteer::toString();
+    if (isBusy())
+        s = s + "\nDistanceLeft: " + std::to_string(this->getDistanceLeft());
+    else
+        s = s + "\nDistanceLeft: None";
+    s = s + "\nOrdersLeft: " + std::to_string(ordersLeft);
     return s;
 }

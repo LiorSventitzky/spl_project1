@@ -2,7 +2,7 @@
 all:	clean compile link
 
 link:
-	g++ -o bin/run bin/main.o bin/WareHouse.o bin/Customer.o bin/SoldierCustomer.o bin/CivilianCustomer.o bin/Volunteer.o bin/CollectorVolunteer.o bin/LimitedCollectorVolunteer.o bin/DriverVolunteer.o bin/LimitedDriverVolunteer.o bin/Order.o bin/BaseAction.o bin/SimulateStep.o bin/AddOrder.o bin/AddCustomer.o bin/PrintOrderStatus.o bin/PrintCustomerStatus.o bin/BackupWarehouse.o
+	g++ -o bin/run bin/main.o bin/WareHouse.o bin/Customer.o bin/SoldierCustomer.o bin/CivilianCustomer.o bin/Volunteer.o bin/CollectorVolunteer.o bin/LimitedCollectorVolunteer.o bin/DriverVolunteer.o bin/LimitedDriverVolunteer.o bin/Order.o bin/BaseAction.o bin/SimulateStep.o bin/AddOrder.o bin/AddCustomer.o bin/PrintOrderStatus.o bin/PrintCustomerStatus.o bin/PrintVolunteerStatus.o bin/BackupWarehouse.o bin/RestoreWareHouse.o
 
 compile:
 	g++ -g -Wall -Weffc++ -c -o bin/main.o src/main.cpp
@@ -22,7 +22,9 @@ compile:
 	g++ -g -Wall -Weffc++ -c -o bin/AddCustomer.o src/AddCustomer.cpp
 	g++ -g -Wall -Weffc++ -c -o bin/PrintOrderStatus.o src/PrintOrderStatus.cpp
 	g++ -g -Wall -Weffc++ -c -o bin/PrintCustomerStatus.o src/PrintCustomerStatus.cpp
+	g++ -g -Wall -Weffc++ -c -o bin/PrintVolunteerStatus.o src/PrintVolunteerStatus.cpp
 	g++ -g -Wall -Weffc++ -c -o bin/BackupWarehouse.o src/BackupWarehouse.cpp
+	g++ -g -Wall -Weffc++ -c -o bin/RestoreWareHouse.o src/RestoreWareHouse.cpp
  #	g++ -g -Wall -Weffc++ -c -o bin/Parse.o src/Parse.cpp
 
 

@@ -25,8 +25,14 @@ void LimitedCollectorVolunteer::acceptOrder(const Order &order)
 
 int LimitedCollectorVolunteer::getMaxOrders() const { return maxOrders; }
 int LimitedCollectorVolunteer::getNumOrdersLeft() const { return ordersLeft; }
+
 string LimitedCollectorVolunteer::toString() const
 {
-    string s = CollectorVolunteer::toString() + " ,max orders:" + std::to_string(maxOrders) + " ,orders left:" + std::to_string(ordersLeft);
+    string s = Volunteer::toString();
+    if (isBusy())
+        s = s + "\nTimeLeft: " + std::to_string(this->getTimeLeft());
+    else
+        s = s + "\nTimeLeft: None";
+    s = s + "\nOrdersLeft: " + std::to_string(ordersLeft);
     return s;
 }

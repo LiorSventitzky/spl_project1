@@ -1,12 +1,13 @@
 #include "../include/Customer.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
-Customer::Customer(int id, const string &name, int locationDistance, int maxOrders) : id(id), name(name), locationDistance(locationDistance), maxOrders(maxOrders)
+Customer::Customer(int id, const string &name, int locationDistance, int maxOrders) : id(id), name(name), locationDistance(locationDistance), maxOrders(maxOrders), ordersId()
 {
 }
 
-Customer::Customer(const Customer &other) : id(other.id), name(other.name), locationDistance(other.locationDistance), maxOrders(other.maxOrders) {}
+Customer::Customer(const Customer &other) : id(other.id), name(other.name), locationDistance(other.locationDistance), maxOrders(other.maxOrders), ordersId() {}
 
 const string &Customer::getName() const { return name; }
 int Customer::getId() const { return id; }
@@ -15,7 +16,7 @@ int Customer::getMaxOrders() const { return maxOrders; }
 int Customer::getNumOrders() const { return ordersId.size(); }
 bool Customer::canMakeOrder() const
 {
-    if (ordersId.size() == maxOrders)
+    if (ordersId.size() == static_cast<std::vector<int>::size_type>(maxOrders))
         return false;
     return true;
 }
@@ -30,7 +31,11 @@ int Customer::addOrder(int orderId) // return OrderId if order was added success
     return -1;
 }
 
-Customer *Customer::clone() const {} // Return a copy of the customer
+string Customer::toString() const
+{
+    string s = " id:" + std::to_string(id) + " name:" + name + " distance:" + std::to_string(locationDistance) + " max orders:" + std::to_string(maxOrders);
+    return s;
+}
 
 Customer::~Customer()
 {

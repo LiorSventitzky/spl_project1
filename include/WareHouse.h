@@ -44,6 +44,7 @@ public:
     void createBackUp();
     void restoreWarehouse();
     void PrintStuff();
+    void PrintWareHouse();
 
 private:
     bool isOpen;

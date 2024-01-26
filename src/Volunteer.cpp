@@ -3,11 +3,11 @@
 #include <string>
 #include <vector>
 
-Volunteer::Volunteer(int id, const string &name) : id(id), name(name), completedOrderId(NO_ORDER), activeOrderId(NO_ORDER)
+Volunteer::Volunteer(int id, const string &name) : completedOrderId(NO_ORDER), activeOrderId(NO_ORDER), id(id), name(name)
 {
 }
 
-Volunteer::Volunteer(const Volunteer &other) : id(other.id), name(other.name), completedOrderId(NO_ORDER), activeOrderId(NO_ORDER) {}
+Volunteer::Volunteer(const Volunteer &other) : completedOrderId(NO_ORDER), activeOrderId(NO_ORDER), id(other.id), name(other.name) {}
 
 int Volunteer::getId() const
 {
@@ -29,14 +29,14 @@ bool Volunteer::isBusy() const
     return false;
 }
 
-bool Volunteer::hasOrdersLeft() const
-{ // Signal whether the volunteer didn't reach orders limit,Always true for CollectorVolunteer and DriverVolunteer
-}
-void Volunteer::step() {} // Simulate volunteer step,if the volunteer finished the order, transfer activeOrderId to completedOrderId
-
 string Volunteer::toString() const
 {
-    return "id:" + std::to_string(id) + "  name:" + name + " activeOrderID:" + std::to_string(activeOrderId) + " completeOrderID:" + std::to_string(completedOrderId);
+    string s = "VoluteerId:" + std::to_string(id);
+    if (isBusy())
+        s = s + "\nisBusy: True" + "\nOrderId: " + std::to_string(activeOrderId);
+    else
+        s = s + "\nisBusy: False" + "\nOrderId: None";
+    return s;
 }
 
 Volunteer::~Volunteer() {}

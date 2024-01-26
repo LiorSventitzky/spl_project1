@@ -9,11 +9,8 @@
 #include <vector>
 #include <sstream>
 
-BaseAction::BaseAction() {}
+BaseAction::BaseAction() : errorMsg(""), status(ActionStatus::COMPLETED) {} // the defult for status is COPLETED only for intialize
 ActionStatus BaseAction::getStatus() const { return status; }
-void BaseAction::act(WareHouse &wareHouse){};
-string BaseAction::toString() const {};
-BaseAction *BaseAction::clone() const {};
 
 void BaseAction::complete() { status = ActionStatus::COMPLETED; }
 void BaseAction::error(string errorMsg)

@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-AddOrder::AddOrder(int id) : customerId(id), BaseAction() {}
+AddOrder::AddOrder(int id) : BaseAction(), customerId(id) {}
 
 AddOrder::AddOrder(const AddOrder &other) : customerId(other.customerId) {}
 

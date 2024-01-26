@@ -1,12 +1,4 @@
 {
-  "C_Cpp.errorSquiggles": "enabled",
-  "makefile.launchConfigurations": [
-    {
-      "cwd": "/mnt/c/Users/97250/documents/spl/hw1/skeleton/bin",
-      "binaryPath": "/mnt/c/Users/97250/documents/spl/hw1/skeleton/bin/run",
-      "binaryArgs": []
-    }
-  ],
   "files.associations": {
     "any": "cpp",
     "array": "cpp",
@@ -93,7 +85,6 @@
     "typeindex": "cpp",
     "typeinfo": "cpp",
     "valarray": "cpp",
-    "variant": "cpp",
-    "printcustomerstatus": "cpp"
+    "variant": "cpp"
   }
 }

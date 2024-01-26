@@ -53,6 +53,11 @@ void DriverVolunteer::step()
 
 string DriverVolunteer::toString() const
 {
-    string s = Volunteer::toString() + " max distance:" + std::to_string(maxDistance) + " distance per step:" + std::to_string(distancePerStep) + " distance left:" + std::to_string(distanceLeft) + " ,type: Driver";
+    string s = Volunteer::toString();
+    if (isBusy())
+        s = s + "\nDistanceLeft: " + std::to_string(distanceLeft);
+    else
+        s = s + "\nDistanceLeft: None";
+    s = s + "\nOrdersLeft: No Limit";
     return s;
 }

@@ -10,3 +10,8 @@ CivilianCustomer *CivilianCustomer::clone() const
 {
     return new CivilianCustomer(*this);
 }
+
+string CivilianCustomer:: toString() const{
+    string s= Customer::toString() + " type:civilian";
+    return s; 
+}

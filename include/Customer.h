@@ -22,6 +22,7 @@ public:
     int addOrder(int orderId);           // return OrderId if order was added successfully, -1 otherwise
     virtual Customer *clone() const = 0; // Return a copy of the customer
     virtual ~Customer();
+    virtual string toString() const;
 
 private:
     const int id;
@@ -37,6 +38,7 @@ public:
     SoldierCustomer(int id, const string &name, int locationDistance, int maxOrders);
     SoldierCustomer(const SoldierCustomer &other);
     SoldierCustomer *clone() const override;
+    string toString() const override;
 
 private:
 };
@@ -47,6 +49,7 @@ public:
     CivilianCustomer(int id, const string &name, int locationDistance, int maxOrders);
     CivilianCustomer(const CivilianCustomer &other);
     CivilianCustomer *clone() const override;
+    string toString() const override;
 
 private:
 };

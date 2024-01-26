@@ -14,6 +14,39 @@ using namespace std;
 
 extern WareHouse *backup;
 
+WareHouse::WareHouse(const string &configFilePath) : isOpen(false), actionsLog(), volunteers(), pendingOrders(), inProcessOrders(), completedOrders(), customers(), customerCounter(0), volunteerCounter(0), orderCounter(0)
+{
+    ParseConFile(configFilePath);
+}
+
+WareHouse::WareHouse(const WareHouse &other) : isOpen(other.isOpen), actionsLog(), volunteers(), pendingOrders(), inProcessOrders(), completedOrders(), customers(), customerCounter(other.customerCounter), volunteerCounter(other.volunteerCounter), orderCounter(other.orderCounter)
+{
+    for (std::vector<Customer *>::size_type i = 0; i < other.customers.size(); i++)
+    {
+        customers.push_back(other.customers[i]->clone());
+    }
+    for (std::vector<Volunteer *>::size_type i = 0; i < other.volunteers.size(); i++)
+    {
+        volunteers.push_back(other.volunteers[i]->clone());
+    }
+    for (std::vector<Order *>::size_type i = 0; i < other.pendingOrders.size(); i++)
+    {
+        pendingOrders.push_back(other.pendingOrders[i]->clone());
+    }
+    for (std::vector<Order *>::size_type i = 0; i < other.inProcessOrders.size(); i++)
+    {
+        inProcessOrders.push_back(other.inProcessOrders[i]->clone());
+    }
+    for (std::vector<Order *>::size_type i = 0; i < other.completedOrders.size(); i++)
+    {
+        completedOrders.push_back(other.completedOrders[i]->clone());
+    }
+    for (std::vector<BaseAction *>::size_type i = 0; i < other.actionsLog.size(); i++)
+    {
+        actionsLog.push_back(other.actionsLog[i]->clone());
+    }
+}
+
 void WareHouse::ParseConFile(const string &configFilePath)
 {
     std::ifstream myfile;
@@ -91,42 +124,6 @@ void WareHouse::addVolunteer(stringstream *temp)
     volunteerCounter++;
 }
 
-WareHouse::WareHouse(const string &configFilePath)
-{
-    isOpen = false;
-    customerCounter = 0;
-    volunteerCounter = 0;
-    ParseConFile(configFilePath);
-}
-
-WareHouse::WareHouse(const WareHouse &other) : isOpen(other.isOpen), customerCounter(other.customerCounter), volunteerCounter(other.volunteerCounter), orderCounter(other.orderCounter)
-{
-    for (auto i = 0; i < other.customers.size(); i++)
-    {
-        customers.push_back(other.customers[i]->clone());
-    }
-    for (auto i = 0; i < other.volunteers.size(); i++)
-    {
-        volunteers.push_back(other.volunteers[i]->clone());
-    }
-    for (auto i = 0; i < other.pendingOrders.size(); i++)
-    {
-        pendingOrders.push_back(other.pendingOrders[i]->clone());
-    }
-    for (auto i = 0; i < other.inProcessOrders.size(); i++)
-    {
-        inProcessOrders.push_back(other.inProcessOrders[i]->clone());
-    }
-    for (auto i = 0; i < other.completedOrders.size(); i++)
-    {
-        completedOrders.push_back(other.completedOrders[i]->clone());
-    }
-    for (auto i = 0; i < other.actionsLog.size(); i++)
-    {
-        actionsLog.push_back(other.actionsLog[i]->clone());
-    }
-}
-
 void WareHouse::addOrder(Order *order)
 {
     pendingOrders.push_back(order);
@@ -135,7 +132,7 @@ void WareHouse::addOrder(Order *order)
 
 Customer &WareHouse::getCustomer(int customerId) const
 {
-    for (int i = 0; i < customers.size(); i++)
+    for (std::vector<Customer *>::size_type i = 0; i < customers.size(); i++)
     {
         if (customers[i]->getId() == customerId)
             return *customers[i];
@@ -147,41 +144,47 @@ Customer &WareHouse::getCustomer(int customerId) const
 
 Volunteer &WareHouse::getVolunteer(int volunteerId) const
 {
-    for (int i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer *>::size_type i = 0; i < volunteers.size(); i++)
     {
         if (volunteers[i]->getId() == volunteerId)
             return *volunteers[i];
     }
     std::cout << "Volunteer was not found" << std::endl;
+    Volunteer *v = new CollectorVolunteer(-1, "NULL", -1);
+    return *v;
 }
 
 Order &WareHouse::getOrder(int orderId) const
 {
-    for (int i = 0; i < pendingOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < pendingOrders.size(); i++)
     {
         if (pendingOrders[i]->getId() == orderId)
             return *pendingOrders[i];
     }
-    for (int i = 0; i < inProcessOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < inProcessOrders.size(); i++)
     {
         if (inProcessOrders[i]->getId() == orderId)
             return *inProcessOrders[i];
     }
-    for (int i = 0; i < completedOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < completedOrders.size(); i++)
     {
         if (completedOrders[i]->getId() == orderId)
             return *completedOrders[i];
     }
     std::cout << "Order was not found" << std::endl;
+    Order *o = new Order(-1, -1, -1);
+    return *o;
 }
 
 void WareHouse::SimulateStepInWarehouse()
 {
+    /*
     std::cout << "vol!!!!!!" << std::endl;
-    for (int i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer*>::size_type i = 0; i < volunteers.size(); i++)
         std::cout << volunteers[i]->toString() << std::endl;
+        */
     // 1
-    for (int i = 0; i < pendingOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < pendingOrders.size(); i++)
     {
         if ((*pendingOrders[i]).getStatus() == OrderStatus::PENDING)
         {
@@ -195,22 +198,22 @@ void WareHouse::SimulateStepInWarehouse()
         }
     }
 
-    std::cout << "step 1 sus" << std::endl;
+    // std::cout << "step 1 sus" << std::endl;
 
     // 2 + 3 + 4
-    for (int i = 0; i < volunteers.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < volunteers.size(); i++)
     {
         if (volunteers[i]->isBusy())
         {
             // 2
             volunteers[i]->step();
-            std::cout << volunteers[i]->toString() << std::endl;
-            std::cout << "step 2 sus" << std::endl;
+            //   std::cout << volunteers[i]->toString() << std::endl;
+            //   std::cout << "step 2 sus" << std::endl;
 
             // 3
             if (volunteers[i]->getCompletedOrderId() != NO_ORDER)
             {
-                for (int j = 0; j < inProcessOrders.size(); j++)
+                for (std::vector<Order *>::size_type j = 0; j < inProcessOrders.size(); j++)
                 {
                     if (inProcessOrders[j]->getId() == volunteers[i]->getCompletedOrderId())
                     {
@@ -229,7 +232,7 @@ void WareHouse::SimulateStepInWarehouse()
                 }
                 volunteers[i]->finishCompletedOrder();
             }
-            std::cout << "step 3 sus" << std::endl;
+            //  std::cout << "step 3 sus" << std::endl;
 
             // 4
             if ((!volunteers[i]->isBusy()) && !volunteers[i]->hasOrdersLeft())
@@ -238,7 +241,7 @@ void WareHouse::SimulateStepInWarehouse()
                 volunteers.erase(volunteers.begin() + i);
                 i--;
             }
-            std::cout << "step 4 sus" << std::endl;
+            //  std::cout << "step 4 sus" << std::endl;
         }
     }
 }
@@ -246,7 +249,7 @@ void WareHouse::SimulateStepInWarehouse()
 bool WareHouse::findAvailableCollector(Order &order, int index)
 {
     int size = volunteers.size();
-    for (int i = 0; i < size; i++)
+    for (auto i = 0; i < size; i++)
     {
         if (typeid(*volunteers[i]) == typeid(CollectorVolunteer) || typeid(*volunteers[i]) == typeid(LimitedCollectorVolunteer))
         {
@@ -266,7 +269,7 @@ bool WareHouse::findAvailableCollector(Order &order, int index)
 
 bool WareHouse::findAvailableDriver(Order &order, int index)
 {
-    for (int i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer *>::size_type i = 0; i < volunteers.size(); i++)
     {
         if (typeid(*volunteers[i]) == typeid(DriverVolunteer) || typeid(*volunteers[i]) == typeid(LimitedDriverVolunteer))
         {
@@ -288,14 +291,17 @@ void WareHouse::addAction(BaseAction *action) { actionsLog.push_back(action); }
 
 const vector<BaseAction *> &WareHouse::getActions() const { return actionsLog; };
 
-int WareHouse::getOrderCounter() { return orderCounter; }
+int WareHouse::getOrderCounter()
+{
+    return orderCounter;
+}
 
 int WareHouse::getCustomerCounter() { return customerCounter; }
 
 void WareHouse::printOrderStatus(int orderId)
 {
     bool found = false;
-    for (int i = 0; i < pendingOrders.size() & !found; i++)
+    for (std::vector<Order *>::size_type i = 0; i < pendingOrders.size() && !found; i++)
     {
         if (pendingOrders[i]->getId() == orderId)
         {
@@ -303,7 +309,7 @@ void WareHouse::printOrderStatus(int orderId)
             found = true;
         }
     }
-    for (int i = 0; i < inProcessOrders.size() & !found; i++)
+    for (std::vector<Order *>::size_type i = 0; i < inProcessOrders.size() && !found; i++)
     {
         if (inProcessOrders[i]->getId() == orderId)
         {
@@ -311,7 +317,7 @@ void WareHouse::printOrderStatus(int orderId)
             found = true;
         }
     }
-    for (int i = 0; i < completedOrders.size() & !found; i++)
+    for (std::vector<Order *>::size_type i = 0; i < completedOrders.size() && !found; i++)
     {
         if (completedOrders[i]->getId() == orderId)
         {
@@ -326,7 +332,7 @@ void WareHouse::printCustomerStatus(int customerId)
     cout << "CustomerId: " + std::to_string(customerId) + "\n";
     Customer &c = getCustomer(customerId);
     vector<int> ordersId = c.getOrdersIds();
-    for (int i = 0; i < ordersId.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < ordersId.size(); i++)
     {
         Order &order = getOrder(ordersId[i]);
         cout << order.shortenedToString();
@@ -336,7 +342,7 @@ void WareHouse::printCustomerStatus(int customerId)
 
 int WareHouse::doesVolunteerExist(int volunteerId)
 {
-    for (int i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer *>::size_type i = 0; i < volunteers.size(); i++)
     {
         if (volunteers[i]->getId() == volunteerId)
             return i;
@@ -373,37 +379,37 @@ void WareHouse::createBackUp()
 void WareHouse::restoreWarehouse()
 {
     // deep delete
-    for (auto i = 0; i < customers.size(); i++)
+    for (std::vector<Customer *>::size_type i = 0; i < customers.size(); i++)
     {
         delete customers[i];
         customers.erase(customers.begin() + i);
         i--;
     }
-    for (auto i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer *>::size_type i = 0; i < volunteers.size(); i++)
     {
         delete volunteers[i];
         volunteers.erase(volunteers.begin() + i);
         i--;
     }
-    for (auto i = 0; i < pendingOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < pendingOrders.size(); i++)
     {
         delete pendingOrders[i];
         pendingOrders.erase(pendingOrders.begin() + i);
         i--;
     }
-    for (auto i = 0; i < inProcessOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < inProcessOrders.size(); i++)
     {
         delete inProcessOrders[i];
         inProcessOrders.erase(inProcessOrders.begin() + i);
         i--;
     }
-    for (auto i = 0; i < completedOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < completedOrders.size(); i++)
     {
         delete completedOrders[i];
         completedOrders.erase(completedOrders.begin() + i);
         i--;
     }
-    for (auto i = 0; i < actionsLog.size(); i++)
+    for (std::vector<BaseAction *>::size_type i = 0; i < actionsLog.size(); i++)
     {
         delete actionsLog[i];
         actionsLog.erase(actionsLog.begin() + i);
@@ -413,28 +419,28 @@ void WareHouse::restoreWarehouse()
     this->customerCounter = backup->customerCounter;
     this->volunteerCounter = backup->volunteerCounter;
     this->orderCounter = backup->orderCounter;
-    for (auto i = 0; i < customers.size(); i++)
+    for (std::vector<Customer *>::size_type i = 0; i < backup->customers.size(); i++)
     {
         customers.push_back((*backup->customers[i]).clone());
     }
-    for (auto i = 0; i < volunteers.size(); i++)
+    for (std::vector<Volunteer *>::size_type i = 0; i < backup->volunteers.size(); i++)
     {
         volunteers.push_back((*backup->volunteers[i]).clone());
     }
-    for (auto i = 0; i < pendingOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < backup->pendingOrders.size(); i++)
     {
         pendingOrders.push_back((*backup->pendingOrders[i]).clone());
     }
-    for (auto i = 0; i < inProcessOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < backup->inProcessOrders.size(); i++)
     {
         inProcessOrders.push_back((*backup->inProcessOrders[i]).clone());
     }
-    for (auto i = 0; i < completedOrders.size(); i++)
+    for (std::vector<Order *>::size_type i = 0; i < backup->completedOrders.size(); i++)
     {
 
         completedOrders.push_back((*backup->completedOrders[i]).clone());
     }
-    for (auto i = 0; i < actionsLog.size(); i++)
+    for (std::vector<Action *>::size_type i = 0; i < backup->actionsLog.size(); i++)
     {
         actionsLog.push_back((*backup->actionsLog[i]).clone());
     }
@@ -442,6 +448,39 @@ void WareHouse::restoreWarehouse()
 
 void WareHouse::PrintStuff()
 {
-    for (int i = 0; i < pendingOrders.size(); i++)
+    for (std::vector<Customer *>::size_type i = 0; i < volunteers.size(); i++)
+        std::cout << volunteers[i]->toString() << std::endl;
+}
+
+void WareHouse::PrintWareHouse()
+{
+    std::cout << "WareHouse:" << std::endl;
+    std::cout << "isOpen: " + std::to_string(isOpen) << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "customers:" + std::to_string(customerCounter) << std::endl;
+    for (std::vector<Customer *>::size_type i = 0; i < customers.size(); i++)
+        std::cout << customers[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "volunteers:" + std::to_string(volunteerCounter) << std::endl;
+    for (std::vector<Volunteer *>::size_type i = 0; i < volunteers.size(); i++)
+        std::cout << volunteers[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "num of orders:" + std::to_string(orderCounter) << std::endl;
+    std::cout << "pending orders:" << std::endl;
+    for (std::vector<Order *>::size_type i = 0; i < pendingOrders.size(); i++)
         std::cout << pendingOrders[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "processing orders:" << std::endl;
+    for (std::vector<Order *>::size_type i = 0; i < inProcessOrders.size(); i++)
+        std::cout << inProcessOrders[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "complete orders:" << std::endl;
+    for (std::vector<Order *>::size_type i = 0; i < completedOrders.size(); i++)
+        std::cout << completedOrders[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "actions:" << std::endl;
+    for (std::vector<BaseAction *>::size_type i = 0; i < actionsLog.size(); i++)
+        std::cout << actionsLog[i]->toString() << std::endl;
+    std::cout << "" << std::endl;
 }

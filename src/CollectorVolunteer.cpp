@@ -48,6 +48,11 @@ void CollectorVolunteer::acceptOrder(const Order &order)
 
 string CollectorVolunteer::toString() const
 {
-    string s = Volunteer::toString() + " ,cool down:" + std::to_string(coolDown) + " ,time left:" + std::to_string(timeLeft) + " ,type: Collector";
+    string s = Volunteer::toString();
+    if (Volunteer::isBusy())
+        s = s + "\nTimeLeft: " + std::to_string(timeLeft);
+    else
+        s = s + "\nTimeLeft: None";
+    s = s + "\nOrdersLeft: No Limit";
     return s;
 }

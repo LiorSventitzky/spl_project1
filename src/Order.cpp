@@ -29,7 +29,7 @@ const string Order::toString() const
     else
         stat = "UNKNOWN";
 
-    string s = "OrderId:" + std::to_string(id) + "\nOrderStatus:" + stat + "\ncustomerId:" + std::to_string(customerId) + "\ndistance:" + std::to_string(distance) + +"\ncollectorId:" + std::to_string(collectorId) + "\ndriverId:" + std::to_string(driverId);
+    string s = " OrderId:" + std::to_string(id) + " OrderStatus:" + stat + " customerId:" + std::to_string(customerId) + " distance:" + std::to_string(distance)  +" collectorId:" + std::to_string(collectorId) + " driverId:" + std::to_string(driverId);
     return s;
 }
 const string Order::shortenedToString() const

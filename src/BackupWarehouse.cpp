@@ -15,4 +15,5 @@ BackupWareHouse *BackupWareHouse::clone() const
 string BackupWareHouse::toString() const
 {
     string s = "BackupWarehouse: " + this->BaseAction::statusToString();
+    return s;
 }
